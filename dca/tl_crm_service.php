@@ -29,14 +29,19 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
         'sorting' => array
         (
             'mode' => 1,
-            'fields' => array('invoiceDate'),
-            'flag' => 2,
-            'panelLayout' => 'filter;sort,search,limit'
+            'fields' => array('projectDateStart'),
+            'flag' => 8,
+            'panelLayout' => 'filter;sort,search,limit',
+            //'disableGrouping' => true,
+            //'headerFields' => array('invoiceNumber', 'toCustomer', 'title'),
+            'child_record_class' => 'no_padding',
         ),
         'label' => array
         (
             'fields' => array('invoiceNumber', 'toCustomer', 'title'),
-            'format' => '%s %s %s'
+            //'format' => '%s %s %s',
+            'label_callback' => array('tl_crm_service', 'listServices'),
+
         ),
         'global_operations' => array
         (
@@ -89,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
     'palettes' => array
     (
         //'__selector__'              => array(''),
-        'default' => '{service_legend},title,toCustomer,description,servicePositions;
+        'default' => '{service_legend},title,projectDateStart,toCustomer,description,servicePositions;
 										{invoice_legend},invoiceType,invoiceNumber,invoiceDate,price,currency,defaultInvoiceText,alternativeInvoiceText,crmInvoiceTpl;
 										{state_legend},paid'
 
@@ -116,9 +121,20 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['title'],
             'inputType' => 'text',
             'exclude' => true,
-            'eval' => array('mandatory' => true, 'maxlength' => 250, 'tl_class' => 'w50'),
+            'eval' => array('mandatory' => true, 'maxlength' => 250, 'tl_class' => 'clr'),
             'sql' => "varchar(255) NOT NULL default ''"
         ),
+
+        'projectDateStart' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['projectDateStart'],
+            'default' => time(),
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => array('mandatory' => true, 'rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'clr wizard'),
+            'sql' => "varchar(10) NOT NULL default ''"
+        ),
+
         'toCustomer' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['toCustomer'],
@@ -128,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'search' => true,
             'exclude' => true,
             'foreignKey' => 'tl_crm_customer.company',
-            'eval' => array('multiple' => false),
+            'eval' => array('multiple' => false, 'tl_class' => 'clr'),
             'sql' => "blob NULL",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
         ),
@@ -153,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
                         'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['position_item'],
                         'exclude' => true,
                         'inputType' => 'textarea',
-                        'eval' => array('style' => 'width:400px;')
+                        'eval' => array('style' => 'width:95%;')
                     ),
                     'quantity' => array
                     (
@@ -161,7 +177,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
                         'exclude' => true,
                         'inputType' => 'select',
                         'options' => range(1, 50, 0.25),
-                        'eval' => array('style' => 'width:80px;', 'chosen' => true)
+                        'eval' => array('style' => 'width:50px;', 'chosen' => true)
                     ),
                     'unit' => array
                     (
@@ -169,14 +185,14 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
                         'exclude' => true,
                         'inputType' => 'select',
                         'options' => array('h', 'Mt.', 'Stk.'),
-                        'eval' => array('style' => 'width:80px;', 'chosen' => true)
+                        'eval' => array('style' => 'width:50px;', 'chosen' => true)
                     ),
                     'price' => array
                     (
                         'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['position_price'],
                         'exclude' => true,
                         'inputType' => 'text',
-                        'eval' => array('rgxp' => 'natural', 'style' => 'width:40px;text-align:center;')
+                        'eval' => array('rgxp' => 'natural', 'style' => 'width:50px;text-align:center;')
                     ),
                 )
             ),
@@ -187,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['price'],
             'inputType' => 'text',
             'exclude' => true,
-            'eval' => array('mandatory' => true, 'maxlength' => 12, 'tl_class' => 'w50', 'rgxp' => 'natural', 'alwaysSave' => true),
+            'eval' => array('mandatory' => true, 'maxlength' => 12, 'tl_class' => 'clr', 'rgxp' => 'natural', 'alwaysSave' => true),
             'sql' => "double NOT NULL default '0'"
         ),
 
@@ -197,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'inputType' => 'select',
             'exclude' => true,
             'options' => array('EUR', 'CHF'),
-            'eval' => array('mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'),
+            'eval' => array('mandatory' => true, 'chosen' => true, 'tl_class' => 'clr'),
             'sql' => "varchar(3) NOT NULL default ''"
         ),
         'invoiceType' => array
@@ -207,8 +223,8 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'filter' => true,
             'search' => true,
             'exclude' => true,
-            'reference' => &$GLOBALS['TL_LANG']['tl_crm_service']['invoiceType'],
-            'options' => array('invoiceNotDelivered', 'invoice', 'calculation'),
+            'reference' => &$GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'],
+            'options' => array('calculation', 'invoiceNotDelivered', 'invoiceDelivered'),
             'inputType' => 'select',
             'eval' => array('tl_class' => 'w50 wizard'),
             'sql' => "varchar(128) NOT NULL default ''"
@@ -219,7 +235,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'default' => time(),
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => array('rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'w50 wizard'),
+            'eval' => array('rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'clr wizard'),
             'sql' => "varchar(10) NOT NULL default ''"
         ),
         'invoiceNumber' => array
@@ -228,7 +244,8 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'default' => time(),
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => array('tl_class' => 'w50 wizard'),
+            'default' => 'XXXX-' . Date::parse('m/Y'),
+            'eval' => array('tl_class' => 'clr'),
             'sql' => "varchar(128) NOT NULL default ''"
         ),
         'defaultInvoiceText' => array
@@ -236,7 +253,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['defaultInvoiceText'],
             'inputType' => 'textarea',
             'exclude' => true,
-            'default' => 'Vielen Dank für Ihren sehr geschätzten Auftrag. Für Rückfragen stehe ich Ihnen gerne zur Verfügung.' . chr(10)  . chr(10) . 'Mit besten Grüßen' . chr(10) . chr(10) . 'Marko Cupic',
+            'default' => 'Vielen Dank für Ihren sehr geschätzten Auftrag. Für Rückfragen stehe ich Ihnen gerne zur Verfügung.' . chr(10) . chr(10) . 'Mit besten Grüßen' . chr(10) . chr(10) . 'Marko Cupic',
             'eval' => array('decodeEntities' => false, 'tl_class' => 'clr'),
             'sql' => "mediumtext NULL"
         ),
@@ -254,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'exclude' => true,
             'inputType' => 'select',
             'options_callback' => array('tl_crm_service', 'getInvoiceTemplates'),
-            'eval' => array('includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'),
+            'eval' => array('includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'),
             'sql' => "varchar(64) NOT NULL default ''"
         ),
         'crmInvoiceTpl' => array
@@ -287,6 +304,13 @@ class tl_crm_service extends Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
+        $b = [];
+        foreach ($GLOBALS['TL_DCA']['tl_crm_service']['fields'] as $k => $v)
+        {
+            $b[] = $k;
+        }
+
+        //die(implode(',',$b));
 
 
         if (Input::get('action') == 'generateInvoice')
@@ -302,6 +326,32 @@ class tl_crm_service extends Backend
     public function onloadCb()
     {
         //
+    }
+
+    /**
+     * Add the type of input field
+     *
+     * @param array $arrRow
+     *
+     * @return string
+     */
+    public function listServices($arrRow)
+    {
+        $date = Date::parse('Y-m-d', $arrRow['date']);
+        $strService = '<div class="tl_content_left %s">
+<div class="list-service-row-1">%s</div>
+<div class="list-service-row-2">%s</div
+><div class="list-service-row-3">%s</div>
+</div>';
+        if ($arrRow['invoiceType'] == 'invoiceDelivered')
+        {
+            $class = ' invoiceDelivered';
+        }
+        if ($arrRow['paid'])
+        {
+            $class = ' invoicePaid';
+        }
+        return sprintf($strService, $class, CrmCustomerModel::findByPk($arrRow['toCustomer'])->company, $arrRow['title'], $arrRow['invoiceNumber']);
     }
 
     public function generateInvoice($id)
@@ -331,7 +381,7 @@ class tl_crm_service extends Backend
         $templateProcessor->setValue('ustId', $ustNumber);
         $templateProcessor->setValue('invoiceDate', Date::parse('d.m.Y', $objInvoice->invoiceDate));
         $templateProcessor->setValue('invoiceNumber', $objInvoice->invoiceNumber);
-        $templateProcessor->setValue('invoiceType', strtoupper($GLOBALS['TL_LANG']['tl_crm_service']['invoiceType'][$objInvoice->invoiceType]));
+        $templateProcessor->setValue('invoiceType', strtoupper($GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$objInvoice->invoiceType][1]));
 
         // Invoice table
         $arrServices = deserialize($objInvoice->servicePositions, true);
@@ -361,7 +411,7 @@ class tl_crm_service extends Backend
             $templateProcessor->setValue('INVOICE_TEXT', $this->formatMultilineText($objInvoice->defaultInvoiceText));
         }
 
-        $type = $GLOBALS['TL_LANG']['tl_crm_service']['invoiceType'][$objInvoice->invoiceType];
+        $type = $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$objInvoice->invoiceType][1];
         $filename = $type . '_' . Date::parse('Ymd', $objInvoice->invoiceDate) . '_' . str_replace('/', '-', $objInvoice->invoiceNumber) . '.docx';
         $templateProcessor->saveAs(TL_ROOT . '/files/Rechnungen/' . $filename);
         sleep(1);

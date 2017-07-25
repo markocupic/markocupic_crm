@@ -28,9 +28,10 @@
  * @filesource
  */
 
-if (TL_MODE == 'FE')
+if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = 'system/modules/contao_quiz/assets/stylesheet.css';
+    $GLOBALS['TL_CSS'][] = 'system/modules/markocupic_crm/assets/css/markocupic_crm_be.css';
+    $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/markocupic_crm/assets/js/markocupic_crm_be.js';
 }
 
 
@@ -40,12 +41,12 @@ if (TL_MODE == 'FE')
 $GLOBALS['BE_MOD']['crm']['customer'] = array
 (
     'tables' => array('tl_crm_customer'),
-    'icon' => 'system/modules/markocupic_crm/assets/icon.gif'
+    'icon' => 'system/modules/markocupic_crm/assets/images/customers.png'
 );
 $GLOBALS['BE_MOD']['crm']['service'] = array
 (
     'tables' => array('tl_crm_service'),
-    'icon' => 'system/modules/markocupic_crm/assets/icon.gif'
+    'icon' => 'system/modules/markocupic_crm/assets/images/products.png'
 );
 
 /**

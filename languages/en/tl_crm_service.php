@@ -6,12 +6,44 @@
  * Time: 21:12
  */
 
-// Global operations
-$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoice'] = array('Rechnung generieren', 'Rechnung generieren');
+// Operations
+$GLOBALS['TL_LANG']['tl_crm_service']['new'] = array('Neues Projekt anfangen','Legen Sie ein neues Proket an.');
+$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoice'] = array('Rechnung/Kostenvoranschlag generieren', 'Rechnung/Kostenvoranschlag generieren');
+$GLOBALS['TL_LANG']['tl_crm_service']['edit'] = array('Das Projekt bearbeiten', 'Das Projekt bearbeiten');
+$GLOBALS['TL_LANG']['tl_crm_service']['copy'] = array('Das Projekt duplizieren', 'Das Projekt duplizieren');
+$GLOBALS['TL_LANG']['tl_crm_service']['delete'] = array('Das Projekt löschen', 'Das Projekt löschen');
+$GLOBALS['TL_LANG']['tl_crm_service']['show'] = array('Das Projekt ansehen', 'Das Projekt ansehen');
 
 
 // Reference
-$GLOBALS['TL_LANG']['tl_crm_service']['invoiceType']['calculation'] = 'Kostenvoranschlag';
-$GLOBALS['TL_LANG']['tl_crm_service']['invoiceType']['invoice'] = 'Rechnung';
-$GLOBALS['TL_LANG']['tl_crm_service']['invoiceType']['invoiceNotDelivered'] = 'Rechnung noch nicht zugestellt';
+
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['calculation'] = array('Kostenvoranschlag','Kostenvoranschlag');
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceDelivered'] = array('Rechnung dem Kunden zugestellt', 'Rechnung');
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceNotDelivered'] = array('Rechnung dem Kunden noch nicht zugestellt','Rechnung noch nicht zugestellt');
+
+
+// Fields
+$GLOBALS['TL_LANG']['tl_crm_service']['title'] = array('Titel','');
+$GLOBALS['TL_LANG']['tl_crm_service']['projectDateStart'] = array('Projektstart','');
+$GLOBALS['TL_LANG']['tl_crm_service']['toCustomer'] = array('Kunde','');
+$GLOBALS['TL_LANG']['tl_crm_service']['description'] = array('Projektinformationen','');
+$GLOBALS['TL_LANG']['tl_crm_service']['servicePositions'] = array('Aufgaben','');
+$GLOBALS['TL_LANG']['tl_crm_service']['price'] = array('Preis','');
+$GLOBALS['TL_LANG']['tl_crm_service']['currency'] = array('Währung','');
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceType'] = array('Rechnungsstatus/Typ','');
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceDate'] = array('Rechnungsdatum','');
+$GLOBALS['TL_LANG']['tl_crm_service']['invoiceNumber'] = array('Rechnungsnummer','');
+$GLOBALS['TL_LANG']['tl_crm_service']['defaultInvoiceText'] = array('Standard-Rechnungstext','');
+$GLOBALS['TL_LANG']['tl_crm_service']['alternativeInvoiceText'] = array('Alternativer Rechnungstext','');
+$GLOBALS['TL_LANG']['tl_crm_service']['crmInvoiceTpl'] = array('Rechnungsvorlage/docx-Template','');
+$GLOBALS['TL_LANG']['tl_crm_service']['paid'] = array('Bezahlt/Projekt abgeschlossen','');
+// Multicolumnwizard
+$GLOBALS['TL_LANG']['tl_crm_service']['position_item'] = array('Leistungsbeschrieb','');
+$GLOBALS['TL_LANG']['tl_crm_service']['position_quantity'] = array('Anzahl','');
+$GLOBALS['TL_LANG']['tl_crm_service']['position_price'] = array('Preis','');
+$GLOBALS['TL_LANG']['tl_crm_service']['position_unit'] = array('Einheit','');
+
+
+
+
 

@@ -12,14 +12,14 @@ namespace Contao;
 
 
 
-class CrmCustomerModel extends \Model
+class CrmServiceModel extends \Model
 {
 
     /**
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_crm_customer';
+    protected static $strTable = 'tl_crm_service';
 
 
 }
