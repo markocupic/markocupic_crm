@@ -328,6 +328,8 @@ class tl_crm_customer extends Backend
 	{
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+
+
 	}
 
 
