@@ -332,9 +332,9 @@ class tl_crm_service extends Backend
 <div class="tl_content_left %s" title="%s">
     <div class="list-service-row-1">%s</div>
     <div class="list-service-row-2">%s</div>
-    <div class="list-service-row-3">%s</div>
-    <div class="list-service-row-4">%s</div>
-    <div class="list-service-row-5">%s</div>
+    <div class="list-service-row-3">%s: %s</div>
+    <div class="list-service-row-4">%s: %s</div>
+    <div class="list-service-row-5">%s: %s</div>
 </div>';
         if ($arrRow['invoiceType'] == 'invoiceDelivered')
         {
@@ -345,10 +345,14 @@ class tl_crm_service extends Backend
             $class = ' invoicePaid';
         }
         $key = $arrRow['invoiceType'];
-        $titleAttr = $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$key][0];
-        return sprintf($strService,  $class, $titleAttr, CrmCustomerModel::findByPk($arrRow['toCustomer'])->company, $arrRow['title'], $arrRow['invoiceNumber'], str_pad($arrRow['id'], 7, 0, STR_PAD_LEFT), $arrRow['price'] . ' ' . $arrRow['currency']);
+        $titleAttr = $arrRow['paid'] ? $GLOBALS['TL_LANG']['tl_crm_service']['paid'][0] : $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$key][0];
+        return sprintf($strService, $class, $titleAttr, CrmCustomerModel::findByPk($arrRow['toCustomer'])->company, $arrRow['title'], $GLOBALS["TL_LANG"]["MSC"]["invoiceNumber"], $arrRow['invoiceNumber'], $GLOBALS["TL_LANG"]["MSC"]["projectId"], str_pad($arrRow['id'], 7, 0, STR_PAD_LEFT), $GLOBALS["TL_LANG"]["MSC"]["projectPrice"], $arrRow['price'] . ' ' . $arrRow['currency']);
     }
 
+    /**
+     * Generate the invoice from a docx template
+     * @param $id
+     */
     public function generateInvoice($id)
     {
         // Load the invoice and customer data
@@ -377,14 +381,23 @@ class tl_crm_service extends Backend
         $templateProcessor->setValue('invoiceDate', Date::parse('d.m.Y', $objInvoice->invoiceDate));
         $templateProcessor->setValue('projectId', $GLOBALS["TL_LANG"]["MSC"]["projectId"] . ': ' . str_pad($objInvoice->id, 7, 0, STR_PAD_LEFT));
 
-        if($objInvoice->invoiceType == 'invoiceDelivered')
+        if ($objInvoice->invoiceType == 'invoiceDelivered')
         {
             $invoiceNumber = $GLOBALS["TL_LANG"]["MSC"]["invoiceNumber"] . ': ' . $objInvoice->invoiceNumber;
-        }else{
+        }
+        else
+        {
             $invoiceNumber = '';
         }
+        // Invoice Number
         $templateProcessor->setValue('invoiceNumber', $invoiceNumber);
+
+        // Invoice type
         $templateProcessor->setValue('invoiceType', strtoupper($GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$objInvoice->invoiceType][1]));
+
+        // Customer ID
+        $customerId = $GLOBALS["TL_LANG"]["MSC"]["customerId"] . ': ' . str_pad($objCustomer->id, 7, 0, STR_PAD_LEFT);
+        $templateProcessor->setValue('customerId', $customerId);
 
         // Invoice table
         $arrServices = deserialize($objInvoice->servicePositions, true);
@@ -415,7 +428,7 @@ class tl_crm_service extends Backend
         }
 
         $type = $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$objInvoice->invoiceType][1];
-        $filename = $type . '_' . Date::parse('Ymd', $objInvoice->invoiceDate) . '_' . '_' . str_pad($objInvoice->id, 7, 0, STR_PAD_LEFT) . '_' . str_replace(' ','-', $objCustomer->company) . '.docx';
+        $filename = $type . '_' . Date::parse('Ymd', $objInvoice->invoiceDate) . '_' . '_' . str_pad($objInvoice->id, 7, 0, STR_PAD_LEFT) . '_' . str_replace(' ', '-', $objCustomer->company) . '.docx';
         $templateProcessor->saveAs(TL_ROOT . '/files/Rechnungen/' . $filename);
         sleep(1);
         \Contao\Controller::sendFileToBrowser('files/Rechnungen/' . $filename);
