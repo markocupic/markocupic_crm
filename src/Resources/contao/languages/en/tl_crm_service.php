@@ -21,6 +21,11 @@ $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['calculation'] = a
 $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceDelivered'] = array('Status: Rechnung dem Kunden zugestellt, Betrag aber noch nicht erhalten.', 'Rechnung');
 $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceNotDelivered'] = array('Status: Rechnung dem Kunden noch nicht zugestellt.','Rechnung noch nicht zugestellt');
 
+// Legends
+$GLOBALS['TL_LANG']['tl_crm_service']['invoice_legend'] = 'Rechnungsdetails';
+$GLOBALS['TL_LANG']['tl_crm_service']['state_legend'] = 'Abschluss';
+$GLOBALS['TL_LANG']['tl_crm_service']['service_legend'] = 'Leistung/Auftragsdetails';
+
 
 // Fields
 $GLOBALS['TL_LANG']['tl_crm_service']['title'] = array('Titel','');
