@@ -1,0 +1,61 @@
+{
+  "name": "markocupic/markocupic_crm",
+  "description": "Simple CRM for the Contao Backend",
+  "keywords": [
+    "contao",
+    "backend",
+    "crm",
+    "content"
+  ],
+  "type": "contao-module",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name": "Marko Cupic",
+      "email": "m.cupic@gmx.ch",
+      "homepage": "https://github.com/markocupic",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/markocupic/markocupic_crm/issues",
+    "source": "https://github.com/markocupic/markocupic_crm"
+  },
+  "require": {
+    "php": ">=5.3"
+  },
+  "replace": {
+  },
+  "conflict": {
+    "contao/core": "3.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Markocupic\\MarkoCupicCrm\\": "src/"
+    },
+    "classmap": [
+      "src/Resources/contao"
+    ],
+    "exclude-from-classmap": [
+      "src/Resources/contao/assets",
+      "src/Resources/contao/config",
+      "src/Resources/contao/dca",
+      "src/Resources/contao/languages",
+      "src/Resources/contao/templates"
+    ]
+  },
+  "extra": {
+    "contao-manager-plugin": "Markocupic\\MarkocupicCrm\\ContaoManager\\Plugin",
+    "contao": {
+      "sources": {
+        "src/Resources/contao/assets": "system/modules/markocupic_crm/assets",
+        "src/Resources/contao/config": "system/modules/markocupic_crm/config",
+        "src/Resources/contao/dca": "system/modules/markocupic_crm/dca",
+        "src/Resources/contao/languages": "system/modules/markocupic_crm/languages",
+        "src/Resources/contao/models": "system/modules/markocupic_crm/models",
+        "src/Resources/contao/modules": "system/modules/markocupic_crm/modules",
+        "src/Resources/contao/templates": "system/modules/markocupic_crm/templates"
+      }
+    }
+  }
+}

@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['tl_crm_service']['invoiceNumber'] = array('Rechnungsnummer'
 $GLOBALS['TL_LANG']['tl_crm_service']['defaultInvoiceText'] = array('Standard-Rechnungstext','');
 $GLOBALS['TL_LANG']['tl_crm_service']['alternativeInvoiceText'] = array('Alternativer Rechnungstext','');
 $GLOBALS['TL_LANG']['tl_crm_service']['crmInvoiceTpl'] = array('Rechnungsvorlage/docx-Template','');
-$GLOBALS['TL_LANG']['tl_crm_service']['paid'] = array('Bezahlt/Projekt abgeschlossen','');
+$GLOBALS['TL_LANG']['tl_crm_service']['paid'] = array('Rechnung vom Kunden bezahlt/Projekt abgeschlossen','');
 // Multicolumnwizard
 $GLOBALS['TL_LANG']['tl_crm_service']['position_item'] = array('Leistungsbeschrieb','');
 $GLOBALS['TL_LANG']['tl_crm_service']['position_quantity'] = array('Anzahl','');
