@@ -291,12 +291,11 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
         'amountReceivedDate' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['amountReceivedDate'],
-            //'default' => time(),
             'exclude' => true,
             'inputType' => 'text',
             'eval' => array('mandatory' => true, 'rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'clr wizard'),
             'sql' => "varchar(10) NOT NULL default ''"
-        ),
+        )
     )
 );
 

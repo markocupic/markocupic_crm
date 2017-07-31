@@ -16,7 +16,6 @@ $GLOBALS['TL_LANG']['tl_crm_service']['show'] = array('Das Projekt ansehen', 'Da
 
 
 // Reference
-
 $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['calculation'] = array('Status: Kostenvoranschlag dem Kunden zugestellt.','Kostenvoranschlag');
 $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceDelivered'] = array('Status: Rechnung dem Kunden zugestellt, Betrag aber noch nicht erhalten.', 'Rechnung');
 $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference']['invoiceNotDelivered'] = array('Status: Rechnung dem Kunden noch nicht zugestellt.','Rechnung noch nicht zugestellt');
