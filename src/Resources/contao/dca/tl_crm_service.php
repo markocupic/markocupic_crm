@@ -93,17 +93,14 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
     // Palettes
     'palettes' => array
     (
-        //'__selector__'              => array(''),
-        'default' => '{service_legend},title,projectDateStart,toCustomer,description,servicePositions;
-										{invoice_legend},invoiceType,invoiceNumber,invoiceDate,price,currency,defaultInvoiceText,alternativeInvoiceText,crmInvoiceTpl;
-										{state_legend},paid'
-
+        '__selector__'              => array('paid'),
+        'default' =>    '{service_legend},title,projectDateStart,toCustomer,description,servicePositions;
+                        {invoice_legend},invoiceType,invoiceNumber,invoiceDate,price,currency,defaultInvoiceText,alternativeInvoiceText,crmInvoiceTpl;
+                        {state_legend},paid'
     ),
 
     // Subpalettes
-    'subpalettes' => array
-    (//'repetition'            	=> ''
-    ),
+    'subpalettes' => array('paid' => 'amountReceivedDate'),
 
     // Fields
     'fields' => array
@@ -288,9 +285,18 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
             'inputType' => 'checkbox',
             'exclude' => true,
             'filter' => true,
-            'eval' => array('tl_class' => 'clr'),
+            'eval' => array('submitOnChange' => true, 'tl_class' => 'clr'),
             'sql' => "char(1) NOT NULL default ''"
-        )
+        ),
+        'amountReceivedDate' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['amountReceivedDate'],
+            //'default' => time(),
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => array('mandatory' => true, 'rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'clr wizard'),
+            'sql' => "varchar(10) NOT NULL default ''"
+        ),
     )
 );
 
