@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
                         'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['position_quantity'],
                         'exclude' => true,
                         'inputType' => 'select',
-                        'options' => range(1, 50, 0.25),
+                        'options' => range(0.25, 50, 0.25),
                         'eval' => array('style' => 'width:50px;', 'chosen' => true)
                     ),
                     'unit' => array
