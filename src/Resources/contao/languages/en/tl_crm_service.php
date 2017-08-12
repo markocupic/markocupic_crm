@@ -8,7 +8,9 @@
 
 // Operations
 $GLOBALS['TL_LANG']['tl_crm_service']['new'] = array('Neues Projekt anfangen','Legen Sie ein neues Proket an.');
-$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoice'] = array('Rechnung/Kostenvoranschlag generieren', 'Rechnung/Kostenvoranschlag generieren');
+$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoiceDocx'] = array('Rechnung/Kostenvoranschlag generieren (docx)', 'Rechnung/Kostenvoranschlag generieren (docx)');
+$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoicePdf'] = array('Rechnung/Kostenvoranschlag generieren (pdf)', 'Rechnung/Kostenvoranschlag generieren (pdf)');
+
 $GLOBALS['TL_LANG']['tl_crm_service']['edit'] = array('Das Projekt bearbeiten', 'Das Projekt bearbeiten');
 $GLOBALS['TL_LANG']['tl_crm_service']['copy'] = array('Das Projekt duplizieren', 'Das Projekt duplizieren');
 $GLOBALS['TL_LANG']['tl_crm_service']['delete'] = array('Das Projekt löschen', 'Das Projekt löschen');

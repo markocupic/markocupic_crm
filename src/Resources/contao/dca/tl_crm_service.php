@@ -1,5 +1,13 @@
 <?php
+require TL_ROOT . '/composer/vendor/autoload.php';
 
+use \CloudConvert\Api;
+use \PhpOffice\PhpWord\TemplateProcessorExtended;
+use \Contao\Controller;
+use \Contao\Validator;
+use \Contao\FilesModel;
+use \Contao\Date;
+use \Contao\Input;
 
 /**
  * Table tl_crm_service
@@ -81,11 +89,17 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
                 'href' => 'act=show',
                 'icon' => 'show.gif'
             ),
-            'generateInvoice' => array
+            'generateInvoiceDocx' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoice'],
-                'href' => 'action=generateInvoice',
-                'icon' => 'system/modules/markocupic_crm/assets/images/invoice_download.png'
+                'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoiceDocx'],
+                'href' => 'action=generateInvoice&type=docx',
+                'icon' => 'system/modules/markocupic_crm/assets/images/page_white_word.png'
+            ),
+            'generateInvoicePdf' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_crm_service']['generateInvoicePdf'],
+                'href' => 'action=generateInvoice&type=pdf',
+                'icon' => 'system/modules/markocupic_crm/assets/images/page_white_acrobat.png'
             ),
         )
     ),
@@ -93,8 +107,8 @@ $GLOBALS['TL_DCA']['tl_crm_service'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('paid'),
-        'default' =>    '{service_legend},title,projectDateStart,toCustomer,description,servicePositions;
+        '__selector__' => array('paid'),
+        'default' => '{service_legend},title,projectDateStart,toCustomer,description,servicePositions;
                         {invoice_legend},invoiceType,invoiceNumber,invoiceDate,price,currency,defaultInvoiceText,alternativeInvoiceText,crmInvoiceTpl;
                         {state_legend},paid'
     ),
@@ -311,8 +325,7 @@ class tl_crm_service extends Backend
 
         if (Input::get('action') == 'generateInvoice')
         {
-            \ClassLoader::addClasses(array(
-                'PhpWord' => 'composer/vendor/phpoffice/phpword/src/PhpWord/PhpWord.php',
+            ClassLoader::addClasses(array(//'PhpWord' => 'composer/vendor/phpoffice/phpword/src/PhpWord/PhpWord.php',
             ));
 
             $this->generateInvoice(Input::get('id'));
@@ -377,7 +390,7 @@ class tl_crm_service extends Backend
         }
 
         // Instantiate the Template processor
-        $templateProcessor = new PhpOffice\PhpWord\TemplateProcessorExtended(TL_ROOT . '/' . $tplSRC);
+        $templateProcessor = new TemplateProcessorExtended(TL_ROOT . '/' . $tplSRC);
 
 
         $templateProcessor->setValue('invoiceAddress', $this->formatMultilineText($objCustomer->invoiceAddress));
@@ -435,8 +448,16 @@ class tl_crm_service extends Backend
         $type = $GLOBALS['TL_LANG']['tl_crm_service']['invoiceTypeReference'][$objInvoice->invoiceType][1];
         $filename = $type . '_' . Date::parse('Ymd', $objInvoice->invoiceDate) . '_' . '_' . str_pad($objInvoice->id, 7, 0, STR_PAD_LEFT) . '_' . str_replace(' ', '-', $objCustomer->company) . '.docx';
         $templateProcessor->saveAs(TL_ROOT . '/files/Rechnungen/' . $filename);
-        sleep(1);
-        \Contao\Controller::sendFileToBrowser('files/Rechnungen/' . $filename);
+        sleep(2);
+        if (Input::get('type') == 'pdf')
+        {
+            $this->sendPdfToBrowser('files/Rechnungen/' . $filename);
+
+        }
+        else
+        {
+            Controller::sendFileToBrowser('files/Rechnungen/' . $filename);
+        }
 
     }
 
@@ -449,6 +470,53 @@ class tl_crm_service extends Backend
         $text = htmlspecialchars(utf8_decode_entities($text));
         $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $text);
         return $text;
+    }
+
+    /**
+     * @param $docxSRC
+     */
+    protected function sendPdfToBrowser($docxSRC)
+    {
+        if (!isset($GLOBALS['TL_CONFIG']['clodConvertApiKey']))
+        {
+            new Exception('No API Key defined for the Cloud Convert Service. https://cloudconvert.com/api');
+        }
+
+        $key = $GLOBALS['TL_CONFIG']['clodConvertApiKey'];
+
+        $path_parts = pathinfo($docxSRC);
+        $dirname = $path_parts['dirname'];
+        $filename = $path_parts['filename'];
+        $pdfSRC = $dirname . '/' . $filename . '.pdf';
+
+        $api = new Api($key);
+        try
+        {
+
+            $api->convert([
+                'inputformat' => 'docx',
+                'outputformat' => 'pdf',
+                'input' => 'upload',
+                'file' => fopen(TL_ROOT . '/' . $docxSRC, 'r'),
+            ])->wait()->download(TL_ROOT . '/' . $pdfSRC);
+            Controller::sendFileToBrowser($pdfSRC);
+
+        } catch (\CloudConvert\Exceptions\ApiBadRequestException $e)
+        {
+            echo "Something with your request is wrong: " . $e->getMessage();
+        } catch (\CloudConvert\Exceptions\ApiConversionFailedException $e)
+        {
+            echo "Conversion failed, maybe because of a broken input file: " . $e->getMessage();
+        } catch (\CloudConvert\Exceptions\ApiTemporaryUnavailableException $e)
+        {
+            echo "API temporary unavailable: " . $e->getMessage() . "\n";
+            echo "We should retry the conversion in " . $e->retryAfter . " seconds";
+        } catch (Exception $e)
+        {
+            // network problems, etc..
+            echo "Something else went wrong: " . $e->getMessage() . "\n";
+        }
+
     }
 
 
