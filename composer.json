@@ -50,13 +50,13 @@
     "contao-manager-plugin": "Markocupic\\MarkocupicCrm\\ContaoManager\\Plugin",
     "contao": {
       "sources": {
-        "src/Resources/contao/assets": "system/modules/markocupic_crm/assets",
-        "src/Resources/contao/config": "system/modules/markocupic_crm/config",
-        "src/Resources/contao/dca": "system/modules/markocupic_crm/dca",
-        "src/Resources/contao/languages": "system/modules/markocupic_crm/languages",
-        "src/Resources/contao/models": "system/modules/markocupic_crm/models",
-        "src/Resources/contao/modules": "system/modules/markocupic_crm/modules",
-        "src/Resources/contao/templates": "system/modules/markocupic_crm/templates"
+        "src/Resources/contao/assets": "system/modules/crm/assets",
+        "src/Resources/contao/config": "system/modules/crm/config",
+        "src/Resources/contao/dca": "system/modules/crm/dca",
+        "src/Resources/contao/languages": "system/modules/crm/languages",
+        "src/Resources/contao/models": "system/modules/crm/models",
+        "src/Resources/contao/modules": "system/modules/crm/modules",
+        "src/Resources/contao/templates": "system/modules/crm/templates"
       }
     }
   }

@@ -10,11 +10,23 @@
 
 
 /**
+ * Register the namespaces
+ */
+ClassLoader::addNamespaces(array
+(
+	'Markocupic',
+));
+
+
+/**
  * Register the classes
  */
 ClassLoader::addClasses(array
 (
+	// Classes
+	'Markocupic\Crm\CrmService' => 'system/modules/crm/classes/CrmService.php',
+
 	// Models
-	'Contao\CrmCustomerModel' => 'system/modules/markocupic_crm/models/CrmCustomerModel.php',
-	'Contao\CrmServiceModel'  => 'system/modules/markocupic_crm/models/CrmServiceModel.php',
+	'Contao\CrmCustomerModel'   => 'system/modules/crm/models/CrmCustomerModel.php',
+	'Contao\CrmServiceModel'    => 'system/modules/crm/models/CrmServiceModel.php',
 ));
